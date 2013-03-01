@@ -4,7 +4,9 @@
  * Implements hook_init().
  */
 function annotator_init() {
+  drupal_add_library('annotator', 'jsgettext', TRUE);
   drupal_add_library('annotator', 'annotator', TRUE);
+
   drupal_add_js(drupal_get_path('module', 'annotator') . '/js/annotator.js');
 
   $debug = variable_get('annotator_debug', FALSE);
@@ -21,6 +23,10 @@ function annotator_init() {
       if (class_exists($class)) {
         $instance = new $class($plugin);
         $instance->setup();
+      }
+      else {
+        error_log($name . 'AnnotatorPlugin' . ' not found...');
+        error_log(print_r($plugin, 1));
       }
     }
   }
@@ -93,6 +99,14 @@ function annotator_library() {
         'type' => 'file',
         'media' => 'all',
       ),
+    ),
+  );
+  $libraries['jsgettext'] = array(
+    'title' => 'Javascript Gettext',
+    'website' => 'http://jsgettext.berlios.de/  ',
+    'version' => '0.08',
+    'js' => array(
+      '/sites/all/libraries/jsgettext/lib/Gettext.js' => array(),
     ),
   );
   return $libraries;
