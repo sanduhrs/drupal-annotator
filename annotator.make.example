@@ -1,0 +1,12 @@
+core = 7.x
+api = 2
+
+libraries[annotator][download][type] = "get"
+libraries[annotator][download][url] = "https://github.com/downloads/okfn/annotator/annotator-full.1.2.6.zip"
+libraries[annotator][directory_name] = "annotator"
+libraries[annotator][destination] = "libraries"
+
+libraries[jsgettext][download][type] = "get"
+libraries[jsgettext][download][url] = "http://downloads.sourceforge.net/project/jsgettext.berlios/Gettext-0.08.tar.gz?r=http%3A%2F%2Fprdownload.berlios.de%2Fjsgettext%2FGettext-0.08.tar.gz&ts=1362167214&use_mirror=garr"
+libraries[jsgettext][directory_name] = "jsgettext"
+libraries[jsgettext][destination] = "libraries"
