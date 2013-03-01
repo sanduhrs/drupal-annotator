@@ -1,6 +1,8 @@
 # TODO
 
-## Shipped
+## Plugin integration
+
+### Shipped
 
 * ✔ Store Plugin - support for saving and loading annotations from a remote web store
 * ✔ Tags Plugin - tag annotations
@@ -10,7 +12,7 @@
 * x Auth Plugin - support for the Annotator Store authentication system
 * x Markdown Plugin - parse annotation text as Markdown
 
-## 3rd Party
+### 3rd Party
 
 * x Touch plugin - support for touch devices (iOS, Android, etc.)
 * x Offline Plugin - support for working on documents while offline, using your browser's localStorage
