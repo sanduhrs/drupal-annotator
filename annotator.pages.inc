@@ -20,20 +20,20 @@ function annotator_admin() {
       $settings['annotator_' . $plugin['name']] = array(
         '#tree' => TRUE,
         '#type' => 'fieldset',
-        '#title' => $plugin['name'],
+        '#title' => $plugin['label'],
         '#collapsible' => TRUE,
         '#collapsed' => TRUE,
       );
       $settings['annotator_' . $plugin['name']] += (array) $instance->settingsForm();
     }
-    $plugin_options[$plugin['name']] = $plugin['label'];
+    $plugin_options[ucfirst($plugin['name'])] = $plugin['label'];
   }
 
   $annotator_plugins = variable_get('annotator_plugins', array());
   $form['plugins']['annotator_plugins'] = array(
     '#type' => 'checkboxes',
     '#description' => t('Enable the desired annotator plugins'),
-    '#options' => drupal_map_assoc((array) $plugin_options),
+    '#options' => $plugin_options,
     '#default_value' => $annotator_plugins,
   );
   $form['settings'] = array(
