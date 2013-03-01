@@ -1,0 +1,216 @@
+<?php
+
+/**
+ * Annotator Store API
+ * @see https://github.com/okfn/annotator/wiki/Storage
+ *
+ * TODO: API permissions
+ */
+
+/**
+ * Implements hook_entity_info().
+ */
+function annotation_entity_info() {
+  $info = array(
+    'annotation' => array(
+      'label' => t('Annotation'),
+      'plural label' => t('Annotations'),
+      'description' => t('An entity type used by the Annotator.'),
+      'entity class' => 'AnnotationClassRevision',
+      'controller class' => 'AnnotationAPIController',
+      'views controller class' => 'EntityDefaultViewsController',
+      'base table' => 'annotation',
+      // 'revision table' => 'annotation_revision',
+      'fieldable' => FALSE,
+      'entity keys' => array(
+        'id' => 'id',
+        // 'revision' => 'revision_id',
+        'label' => 'title',
+      ),
+      'label callback' => 'annotation_label',
+      'uri callback' => 'annotation_uri',
+      'bundles' => array(),
+      'bundle keys' => array(
+        'bundle' => 'name',
+      ),
+      'view modes' => array(
+        'full' => array(
+          'label' => t('Default'),
+          'custom settings' => FALSE,
+        ),
+      ),
+      'module' => 'annotation',
+      'access callback' => 'annotation_access',
+      'static cache' => TRUE,
+    ),
+  );
+
+  // Support entity cache module.
+  if (module_exists('entitycache')) {
+    $info['annotation']['field cache'] = FALSE;
+    $info['annotation']['entity cache'] = TRUE;
+  }
+  return $info;
+}
+
+/**
+ * Access callback.
+ */
+function annotation_access($op, $entity, $account = NULL, $entity_type = NULL) {
+  global $user;
+  if (!isset($account)) {
+    $account = $user;
+  }
+  switch ($op) {
+    case 'create':
+      return user_access('administer annotations', $account)
+          || user_access('create annotations', $account);
+    case 'view':
+      return user_access('administer annotations', $account)
+          || user_access('view annotations', $account);
+    case 'edit':
+      return user_access('administer annotations')
+          || user_access('edit any annotations')
+          || (user_access('edit own annotations') && ($entity->uid == $account->uid));
+  }
+}
+
+/**
+ * Implements hook_entity_property_info_alter().
+ */
+function annotation_entity_property_info_alter(&$info) {
+  $properties = &$info['annotation']['properties'];
+  $properties['created'] = array(
+    'label' => t('Date created'),
+    'type' => 'date',
+    'description' => t('The date the annotation was created.'),
+    'setter callback' => 'entity_property_verbatim_set',
+    'setter permission' => 'administer annotations',
+    'schema field' => 'created',
+  );
+  $properties['updated'] = array(
+    'label' => t('Date updated'),
+    'type' => 'date',
+    'schema field' => 'updated',
+    'description' => t('The date the annotation was last updated.'),
+  );
+  $properties['user'] = array(
+    'label' => t('Author'),
+    'type' => 'user',
+    'description' => t('The author of the annotation.'),
+    'setter callback' => 'entity_property_verbatim_set',
+    'setter permission' => 'administer annotations',
+    'required' => TRUE,
+    'schema field' => 'user',
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function annotation_menu() {
+  $items = array();
+  $items['annotation/%annotation'] = array(
+    'title callback' => 'entity_label',
+    'title arguments' => array('annotation', 1),
+    'page callback' => 'annotation_view',
+    'page arguments' => array(1),
+    'access callback' => 'entity_access',
+    'access arguments' => array('view', 'annotation', 1),
+    'file' => 'annotation.pages.inc',
+  );
+  $items['annotation/api'] = array(
+    'page callback' => 'annotation_api',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+    'file' => 'annotation.store.inc',
+  );
+  $items['annotation/api/annotations'] = array(
+    'page callback' => 'annotation_endpoint',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+    'file' => 'annotation.store.inc',
+  );
+  $items['annotation/api/annotations/%'] = array(
+    'page callback' => 'annotation_endpoint',
+    'page arguments' => array(3),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+    'file' => 'annotation.store.inc',
+  );
+  $items['annotation/api/search'] = array(
+    'page callback' => 'annotation_api_search',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+    'file' => 'annotation.store.inc',
+  );
+  return $items;
+}
+
+/**
+ * Gets an array of all test entity types, keyed by the name.
+ *
+ * @param $name
+ *   If set, the type with the given name is returned.
+ */
+function annotation_get_types($name = NULL) {
+  $types = entity_load_multiple_by_name('annotation', isset($name) ? array($name) : FALSE);
+  return isset($name) ? reset($types) : $types;
+}
+
+/**
+ * Load a single record.
+ */
+function annotation_load($id, $reset = FALSE) {
+  $annotations = annotation_load_multiple(array($id), $reset);
+  return array_shift($annotations);
+}
+
+/**
+ * Load multiple records.
+ */
+function annotation_load_multiple($ids = array(), $conditions = array(), $reset = FALSE) {
+  return entity_load('annotation', $ids, $conditions, $reset);
+}
+
+/**
+ * Save a single record.
+ */
+function annotation_save(&$entity) {
+  // dd($entity);
+  return entity_save('annotation', $entity);
+}
+
+/**
+ * Delete a single record.
+ */
+function annotation_delete($id) {
+  return entity_delete('annotation', $id);
+}
+
+/**
+ * Delete multiple records.
+ */
+function annotation_delete_multiple($ids) {
+  return entity_delete_multiple('annotation', $ids);
+}
+
+/**
+ * Implements hook_ctools_plugin_directory().
+ */
+function annotation_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'annotator') {
+    return 'plugins/' . $plugin;
+  }
+}
+
+/**
+ * Implements hook_ctools_plugin_type().
+ */
+function annotation_ctools_plugin_type() {
+  return array(
+    'annotator' => array(
+      'cache' => FALSE,
+    ),
+  );
+}

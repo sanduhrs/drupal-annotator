@@ -1,0 +1,11 @@
+name = Annotation
+description = Annotator annotation store
+package = Annotator
+core = 7.x
+
+files[] = annotation.class.inc
+files[] = annotation.controller.inc
+files[] = plugins/annotator/StoreAnnotatorPlugin.class.inc
+
+dependencies[] = annotator
+dependencies[] = entity

@@ -1,0 +1,36 @@
+<?php
+
+/**
+ * Implements hook_library().
+ */
+function annotator_helloworld_library() {
+  $libraries['annotator_helloworld'] = array(
+    'title' => 'Annotator HelloWorld',
+    'website' => 'http://drupal.org/project/annotator',
+    'version' => '0.1',
+    'js' => array(
+      drupal_get_path('module', 'annotator_helloworld') . '/js/annotator_helloworld.js' => array(),
+    ),
+  );
+  return $libraries;
+}
+
+/**
+ * Implements hook_ctools_plugin_directory().
+ */
+function annotator_helloworld_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'annotator') {
+    return 'plugins/' . $plugin;
+  }
+}
+
+/**
+ * Implements hook_ctools_plugin_type().
+ */
+function annotator_helloworld_ctools_plugin_type() {
+  return array(
+    'annotator' => array(
+      'cache' => FALSE,
+    ),
+  );
+}

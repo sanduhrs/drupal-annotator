@@ -1,0 +1,120 @@
+<?php
+
+/**
+ * Implements hook_schema().
+ */
+function annotation_schema() {
+  $schema = array();
+  $schema['annotation'] = array(
+    'description' => 'Stores entity_test items.',
+    'fields' => array(
+      'id' => array(
+        'type' => 'serial',
+        'not null' => TRUE,
+        'description' => 'Primary Key: Unique entity_test item ID.',
+      ),
+      'name' => array(
+        'description' => 'The name of the entity_test.',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => 'annotation',
+      ),
+      'uid' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => FALSE,
+        'default' => NULL,
+        'description' => "The {users}.uid of the associated user.",
+      ),
+      'revision_id' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => FALSE,
+        'default' => NULL,
+        'description' => 'The ID of the entity\'s default revision.',
+      ),
+      'created' => array(
+        'description' => 'The creation datetime of the annotation.',
+        'type' => 'varchar',
+        'length' => 30,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'updated' => array(
+        'description' => 'The updated datetime of the annotation.',
+        'type' => 'varchar',
+        'length' => 30,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'text' => array(
+        'type' => 'text',
+        'not null' => TRUE,
+        'size' => 'big',
+        'description' => 'The text of this annotation.',
+      ),
+      'quote' => array(
+        'type' => 'text',
+        'not null' => TRUE,
+        'size' => 'big',
+        'description' => 'The text of this annotation.',
+      ),
+      'uri' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'Type uri of this annotation.',
+      ),
+      'consumer' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'Type uri of this annotation.',
+      ),
+      'tags' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'serialize' => TRUE,
+        'description' => 'The tags the annotation is tagged with.',
+      ),
+      'ranges' => array(
+        'type' => 'text',
+        'not null' => TRUE,
+        'serialize' => TRUE,
+        'description' => 'The ranges of the annotation.',
+      ),
+    ),
+    'indexes' => array(
+      'uid' => array('uid'),
+      'annotation_updated' => array('updated'),
+      'annotation_created' => array('created'),
+    ),
+    'foreign keys' => array(
+      'uid' => array('users' => 'uid'),
+      // 'name' => array('annotation_types' => 'name'),
+    ),
+    'primary key' => array('id'),
+  );
+
+  // $schema['annotation_revision'] = $schema['annotation'];
+  // $schema['annotation_revision']['fields']['revision_id'] = array(
+  //   'type' => 'serial',
+  //   'not null' => TRUE,
+  //   'description' => 'Primary Key: Unique revision ID.',
+  // );
+  // $schema['annotation_revision']['fields']['id'] = array(
+  //   'type' => 'int',
+  //   'unsigned' => TRUE,
+  //   'not null' => FALSE,
+  //   'default' => NULL,
+  //   'description' => 'The ID of the attached entity.',
+  // );
+  // $schema['annotation_revision']['primary key'] = array('revision_id');
+
+  return $schema;
+}

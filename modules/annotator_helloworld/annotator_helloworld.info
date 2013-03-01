@@ -1,0 +1,9 @@
+name = Annotator HelloWorld
+description = Annotator HelloWorld module.
+package = Annotator
+core = 7.x
+hidden = TRUE
+
+files[] = plugins/annotator/HelloWorldAnnotatorPlugin.class.inc
+
+dependencies[] = annotator
