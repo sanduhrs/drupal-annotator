@@ -1,18 +1,17 @@
 <?php
 
 /**
- * Implements hook_init().
+ * Implements hook_init().       
  */
 function annotator_init() {
-  drupal_add_library('annotator', 'jsgettext', TRUE);
+  if (module_exists('locale')) {
+    drupal_add_library('annotator', 'jsgettext', TRUE);
+  }
   drupal_add_library('annotator', 'annotator', TRUE);
-
   drupal_add_js(drupal_get_path('module', 'annotator') . '/js/annotator.js');
 
-  $debug = variable_get('annotator_debug', FALSE);
-  if ($debug) {
-    drupal_add_js(array('annotator' => array('debug' => $debug)), 'setting');
-  }
+  $debug = (boolean) variable_get('annotator_debug', FALSE);
+  drupal_add_js(array('annotator' => array('debug' => $debug)), 'setting');
 
   ctools_include('plugins');
   $annotator_plugins = variable_get('annotator_plugins', array());
@@ -23,10 +22,6 @@ function annotator_init() {
       if (class_exists($class)) {
         $instance = new $class($plugin);
         $instance->setup();
-      }
-      else {
-        error_log($name . 'AnnotatorPlugin' . ' not found...');
-        error_log(print_r($plugin, 1));
       }
     }
   }
@@ -92,7 +87,7 @@ function annotator_library() {
     'website' => 'http://okfnlabs.org/annotator/',
     'version' => '1.2.6',
     'js' => array(
-      '/sites/all/libraries/annotator/annotator-full.min.js' => array(),
+      './sites/all/libraries/annotator/annotator-full.min.js' => array(),
     ),
     'css' => array(
       './sites/all/libraries/annotator/annotator.min.css' => array(
@@ -103,10 +98,10 @@ function annotator_library() {
   );
   $libraries['jsgettext'] = array(
     'title' => 'Javascript Gettext',
-    'website' => 'http://jsgettext.berlios.de/  ',
+    'website' => 'http://jsgettext.berlios.de/',
     'version' => '0.08',
     'js' => array(
-      '/sites/all/libraries/jsgettext/lib/Gettext.js' => array(),
+      './sites/all/libraries/jsgettext/lib/Gettext.js' => array(),
     ),
   );
   return $libraries;
