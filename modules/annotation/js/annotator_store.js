@@ -14,10 +14,6 @@
           'uri': window.location.href
         }
       });
-
-      if (typeof Drupal.settings.annotator.debug !== "undefined") {
-        console.log('Annotator Store plugin has been initialized.');
-      }
     }
   };
 })(jQuery);
