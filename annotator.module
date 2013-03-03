@@ -89,6 +89,14 @@ function annotator_library() {
       './sites/all/libraries/jsgettext/lib/Gettext.js' => array(),
     ),
   );
+  $libraries['showdown'] = array(
+    'title' => 'Showdown',
+    'website' => 'https://github.com/coreyti/showdown',
+    'version' => '0.3.1',
+    'js' => array(
+      './sites/all/libraries/showdown/showdown.js' => array(),
+    ),
+  );
   return $libraries;
 }
 
