@@ -1,6 +1,8 @@
 core = 7.x
 api = 2
 
+; Plugins (shipped)
+
 libraries[annotator][download][type] = "get"
 libraries[annotator][download][url] = "https://github.com/downloads/okfn/annotator/annotator-full.1.2.6.zip"
 libraries[annotator][directory_name] = "annotator"
@@ -10,3 +12,28 @@ libraries[jsgettext][download][type] = "get"
 libraries[jsgettext][download][url] = "http://downloads.sourceforge.net/project/jsgettext.berlios/Gettext-0.08.tar.gz?r=http%3A%2F%2Fprdownload.berlios.de%2Fjsgettext%2FGettext-0.08.tar.gz&ts=1362167214&use_mirror=garr"
 libraries[jsgettext][directory_name] = "jsgettext"
 libraries[jsgettext][destination] = "libraries"
+
+libraries[showdown][download][type] = "get"
+libraries[showdown][download][url] = "https://raw.github.com/coreyti/showdown/master/compressed/showdown.js"
+libraries[showdown][directory_name] = "showdown"
+libraries[showdown][destination] = "libraries"
+
+; Plugins (3rd party)
+
+libraries[annotator.touch.js][download][type] = "git"
+libraries[annotator.touch.js][download][url] = "git://github.com/aron/annotator.touch.js.git"
+libraries[annotator.touch.js][download][revision] = "7ae6b2a890fd1861b89cb1de26eeca83d4aa254d"
+libraries[annotator.touch.js][download][branch] = "master"
+libraries[annotator.touch.js][directory_name] = "annotator.touch.js"
+
+libraries[annotator.offline.js][download][type] = "git"
+libraries[annotator.offline.js][download][url] = "git://github.com/aron/annotator.offline.js.git"
+libraries[annotator.offline.js][download][revision] = "93eccdfd602066295a0f5889b3e7da3c9b77444f"
+libraries[annotator.offline.js][download][branch] = "master"
+libraries[annotator.offline.js][directory_name] = "annotator.offline.js"
+
+libraries[annotator.readmill.js][download][type] = "git"
+libraries[annotator.readmill.js][download][url] = "git://github.com/aron/annotator.readmill.js.git"
+libraries[annotator.readmill.js][download][revision] = "0a52575283c5e1cb3c792bbb6ae8c786c9431b04"
+libraries[annotator.readmill.js][download][branch] = "master"
+libraries[annotator.readmill.js][directory_name] = "annotator.readmill.js"
