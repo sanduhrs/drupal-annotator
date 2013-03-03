@@ -1,0 +1,36 @@
+<?php
+
+/**
+ * Implements hook_library().
+ */
+function annotator_touch_library() {
+  $libraries['annotator_touch'] = array(
+    'title' => 'Annotator Touch',
+    'website' => 'https://github.com/aron/annotator.touch.js',
+    'version' => '7ae6b2a890fd1861b89cb1de26eeca83d4aa254d',
+    'js' => array(
+      './sites/all/libraries/annotator.touch.js' => array(),
+    ),
+  );
+  return $libraries;
+}
+
+/**
+ * Implements hook_ctools_plugin_directory().
+ */
+function annotator_touch_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'annotator') {
+    return 'plugins/' . $plugin;
+  }
+}
+
+/**
+ * Implements hook_ctools_plugin_type().
+ */
+function annotator_touch_ctools_plugin_type() {
+  return array(
+    'annotator' => array(
+      'cache' => FALSE,
+    ),
+  );
+}

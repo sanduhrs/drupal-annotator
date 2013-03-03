@@ -1,0 +1,9 @@
+name = Annotator Readmill
+description = Annotator Readmill module.
+package = Annotator
+core = 7.x
+hidden = TRUE
+
+files[] = plugins/annotator/ReadmillAnnotatorPlugin.class.inc
+
+dependencies[] = annotator

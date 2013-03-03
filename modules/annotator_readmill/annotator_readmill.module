@@ -1,0 +1,36 @@
+<?php
+
+/**
+ * Implements hook_library().
+ */
+function annotator_readmill_library() {
+  $libraries['annotator_readmill'] = array(
+    'title' => 'Annotator Readmill',
+    'website' => 'https://github.com/aron/annotator.readmill.js',
+    'version' => '0a52575283c5e1cb3c792bbb6ae8c786c9431b04',
+    'js' => array(
+      './sites/all/libraries/annotator.readmill.js' => array(),
+    ),
+  );
+  return $libraries;
+}
+
+/**
+ * Implements hook_ctools_plugin_directory().
+ */
+function annotator_readmill_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'annotator') {
+    return 'plugins/' . $plugin;
+  }
+}
+
+/**
+ * Implements hook_ctools_plugin_type().
+ */
+function annotator_readmill_ctools_plugin_type() {
+  return array(
+    'annotator' => array(
+      'cache' => FALSE,
+    ),
+  );
+}

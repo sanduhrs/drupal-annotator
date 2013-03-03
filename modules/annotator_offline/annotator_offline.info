@@ -1,0 +1,9 @@
+name = Annotator Offline
+description = Annotator Offline module.
+package = Annotator
+core = 7.x
+hidden = TRUE
+
+files[] = plugins/annotator/OfflineAnnotatorPlugin.class.inc
+
+dependencies[] = annotator

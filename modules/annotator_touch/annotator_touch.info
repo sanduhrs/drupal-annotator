@@ -1,0 +1,9 @@
+name = Annotator Touch
+description = Annotator Touch module.
+package = Annotator
+core = 7.x
+hidden = TRUE
+
+files[] = plugins/annotator/TouchAnnotatorPlugin.class.inc
+
+dependencies[] = annotator

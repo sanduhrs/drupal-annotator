@@ -1,0 +1,36 @@
+<?php
+
+/**
+ * Implements hook_library().
+ */
+function annotator_offline_library() {
+  $libraries['annotator_offline'] = array(
+    'title' => 'Annotator Offline',
+    'website' => 'https://github.com/aron/annotator.offline.js',
+    'version' => '93eccdfd602066295a0f5889b3e7da3c9b77444f',
+    'js' => array(
+      './sites/all/libraries/annotator.offline.js' => array(),
+    ),
+  );
+  return $libraries;
+}
+
+/**
+ * Implements hook_ctools_plugin_directory().
+ */
+function annotator_offline_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'annotator') {
+    return 'plugins/' . $plugin;
+  }
+}
+
+/**
+ * Implements hook_ctools_plugin_type().
+ */
+function annotator_offline_ctools_plugin_type() {
+  return array(
+    'annotator' => array(
+      'cache' => FALSE,
+    ),
+  );
+}
