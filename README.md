@@ -6,11 +6,15 @@ project.
 
 ## Features
 
+* Provides an entity based backend-store
+* Support for I18N
 * Support for the Store plugin
+* Support for the Permissions plugin
+* Support for the Auth plugin
 * Support for the Tags plugin
 * Support for the Unsupported plugin
+* Support for the Markdown plugin
 * Support for the Filter plugin
-* Provides a Entity based annotation storage
 * Integrates with Ctools plugins
 
 ## Dependencies
