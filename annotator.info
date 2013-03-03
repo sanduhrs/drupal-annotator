@@ -8,6 +8,7 @@ configure = admin/config/media/annotator
 files[] = includes/AnnotatorPlugin.class.inc
 files[] = plugins/annotator/FilterAnnotatorPlugin.class.inc
 files[] = plugins/annotator/I18nAnnotatorPlugin.class.inc
+files[] = plugins/annotator/PermissionsAnnotatorPlugin.class.inc
 files[] = plugins/annotator/TagsAnnotatorPlugin.class.inc
 files[] = plugins/annotator/UnsupportedAnnotatorPlugin.class.inc
 

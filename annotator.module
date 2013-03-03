@@ -10,22 +10,7 @@ function annotator_init() {
   drupal_add_library('annotator', 'annotator', TRUE);
   drupal_add_js(drupal_get_path('module', 'annotator') . '/js/annotator.js');
 
-  $debug = (boolean) variable_get('annotator_debug', FALSE);
-  drupal_add_js(array('annotator' => array('debug' => $debug)), 'setting');
-
-  ctools_include('plugins');
-  $annotator_plugins = variable_get('annotator_plugins', array());
-  foreach ($annotator_plugins as $name => $enabled) {
-    if ((boolean) $enabled) {
-      $plugin = ctools_get_plugins('annotator', 'annotator', $name . 'AnnotatorPlugin');
-      $class = ctools_plugin_get_class($plugin, 'handler');
-      if (class_exists($class)) {
-        $instance = new $class($plugin);
-        $instance->setup();
-      }
-    }
-  }
-
+  annotator_execute_plugins();
 }
 
 /**
@@ -125,4 +110,33 @@ function annotator_ctools_plugin_type() {
       'cache' => FALSE,
     ),
   );
+}
+
+/**
+ * Execute ctools plugins
+ */
+function annotator_execute_plugins($annotation = NULL, $op = NULL) {
+  ctools_include('plugins');
+  $annotator_plugins = variable_get('annotator_plugins', array());
+  foreach ($annotator_plugins as $name => $enabled) {
+    if ((boolean) $enabled) {
+      $plugin = ctools_get_plugins('annotator', 'annotator', $name . 'AnnotatorPlugin');
+      $class = ctools_plugin_get_class($plugin, 'handler');
+      if (class_exists($class)) {
+        $instance = new $class($plugin);
+        $instance->setup();
+
+        if ($annotation && $op) {
+          $instance->alter($annotation, $op);
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_TYPE_alter().
+ */
+function annotator_annotation_alter($entity, $op) {
+  annotator_execute_plugins($entity, $op);
 }
