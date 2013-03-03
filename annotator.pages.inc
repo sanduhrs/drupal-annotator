@@ -43,10 +43,5 @@ function annotator_admin() {
     '#collapsed' => FALSE,
   );
   $form['settings'] += (array) $settings;
-  // $form['settings']['annotator_debug'] = array(
-  //   '#type' => 'checkbox',
-  //   '#title' => t('Enable debugging'),
-  //   '#default_value' => variable_get('annotator_debug', FALSE),
-  // );
   return system_settings_form($form);
 }
