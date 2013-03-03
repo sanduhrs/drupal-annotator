@@ -12,16 +12,6 @@ class StoreAnnotatorPlugin extends AnnotatorPlugin {
       '#default_value' => $defaults['prefix'],
       '#description' => t('The store endpoint.'),
     );
-    $form['showViewPermissionsCheckbox'] = array(
-      '#type' => 'checkbox',
-      '#title' => t('Show view permissions Checkbox'),
-      '#default_value' => $defaults['showViewPermissionsCheckbox'],
-    );
-    $form['showEditPermissionsCheckbox'] = array(
-      '#type' => 'checkbox',
-      '#title' => t('Show edit permissions Checkbox'),
-      '#default_value' => $defaults['showEditPermissionsCheckbox'],
-    );
     $form['urls'] = array(
       '#type' => 'fieldset',
       '#title' => t('URLs'),
