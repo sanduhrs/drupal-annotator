@@ -12,12 +12,16 @@ class AnnotationAPIController extends EntityAPIController {
     $entities = parent::load($ids, $conditions);
     foreach ($entities as $id => $entity) {
       $entity->annotator_schema_version = ANNOTATOR_SCHEMA_VERSION;
+      $op = 'load';
+      drupal_alter('annotation', $entity, $op);
       $entities[$id] = $entity;
     }
     return $entities;
   }
 
   public function save($entity, DatabaseTransaction $transaction = NULL) {
+    $op = 'save';
+    drupal_alter('annotation', $entity, $op);
     parent::save($entity, $transaction);
   }
 
