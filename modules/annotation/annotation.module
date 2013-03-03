@@ -5,6 +5,7 @@
  * @see https://github.com/okfn/annotator/wiki/Storage
  *
  * TODO: API permissions
+ * TODO: Node access check
  */
 
 /**
@@ -177,7 +178,6 @@ function annotation_load_multiple($ids = array(), $conditions = array(), $reset 
  * Save a single record.
  */
 function annotation_save(&$entity) {
-  // dd($entity);
   return entity_save('annotation', $entity);
 }
 
