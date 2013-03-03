@@ -19,6 +19,7 @@ class AnnotatorPlugin {
     return array_merge($defaults, $stored);
   }
 
-  public function setup() {
-  }
+  public function setup() {}
+
+  public function alter(&$annotation, $op) {}
 }
