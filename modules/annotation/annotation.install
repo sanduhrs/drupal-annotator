@@ -27,13 +27,13 @@ function annotation_schema() {
         'default' => NULL,
         'description' => "The {users}.uid of the associated user.",
       ),
-      'revision_id' => array(
-        'type' => 'int',
-        'unsigned' => TRUE,
-        'not null' => FALSE,
-        'default' => NULL,
-        'description' => 'The ID of the entity\'s default revision.',
-      ),
+      // 'revision_id' => array(
+      //   'type' => 'int',
+      //   'unsigned' => TRUE,
+      //   'not null' => FALSE,
+      //   'default' => NULL,
+      //   'description' => 'The ID of the entity\'s default revision.',
+      // ),
       'created' => array(
         'description' => 'The creation datetime of the annotation.',
         'type' => 'varchar',
@@ -75,10 +75,8 @@ function annotation_schema() {
         'description' => 'Type uri of this annotation.',
       ),
       'tags' => array(
-        'type' => 'varchar',
-        'length' => 255,
+        'type' => 'text',
         'not null' => TRUE,
-        'default' => '',
         'serialize' => TRUE,
         'description' => 'The tags the annotation is tagged with.',
       ),
