@@ -56,7 +56,7 @@ function annotation_api() {
 function annotation_api_index() {
   $records = annotation_load_multiple(FALSE);
   foreach ($records as $rid => $record) {
-    $records[$rid] = annotation_api_entity_prepare($record);
+    $records[$rid] = annotation_api_entity_prepare($record, 'read');
   }
 
   // Send response
@@ -74,7 +74,7 @@ function annotation_api_create() {
   $entity->created = REQUEST_TIME;
   $entity->updated = REQUEST_TIME;
 
-  $entity = annotation_api_entity_prepare($entity);
+  $entity = annotation_api_entity_prepare($entity, 'create');
   annotation_save($entity);
 
   // Send response
@@ -87,7 +87,7 @@ function annotation_api_create() {
 function annotation_api_read($id) {
   $record = annotation_load($id);
   $record = array_shift($record);
-  $record = annotation_api_entity_prepare($record);
+  $record = annotation_api_entity_prepare($record, 'read');
 
   // Send response
   drupal_json_output($record);
@@ -102,7 +102,7 @@ function annotation_api_update($id) {
   $entity = annotation_api_from_stdin();
   $entity->updated = REQUEST_TIME;
 
-  $entity = annotation_api_entity_prepare($entity);
+  $entity = annotation_api_entity_prepare($entity, 'update');
   annotation_save($entity);
 
   // Send response
@@ -188,7 +188,7 @@ function annotation_api_search() {
   }
 
   foreach ($records as $rid => $record) {
-    $records[$rid] = annotation_api_entity_prepare($record);
+    $records[$rid] = annotation_api_entity_prepare($record, 'read');
   }
 
   $output = array(
@@ -220,17 +220,25 @@ function annotation_api_from_stdin() {
 /**
  * Prepare entity for api usage
  */
-function annotation_api_entity_prepare($entity) {
-  if (isset($entity->uid)) {
-    $account = user_load($entity->uid);
-    $entity->user = new stdClass();
-    $entity->user->uid = $account->uid;
-    $entity->user->username = $account->name;
-    unset($entity->uid);
-  }
-  elseif (isset($entity->user)) {
-    $entity->uid = $entity->user->uid;
-    unset($entity->user);
+function annotation_api_entity_prepare($entity, $op) {
+  switch($op) {
+    case 'read':
+      $account = user_load($entity->uid);
+      $entity->user = array(
+        'uid' => $account->uid,
+        'name' => $account->name,
+        'roles' => array_values($account->roles),
+      );
+      unset($entity->uid);
+      break;
+    case 'create':
+      $entity->uid = $entity->user;
+      unset($entity->user);
+      break;
+    case 'update':
+      $entity->uid = $entity->user;
+      unset($entity->user);
+      break;
   }
   return $entity;
 }
