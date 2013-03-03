@@ -74,17 +74,27 @@ function annotation_schema() {
         'default' => '',
         'description' => 'Type uri of this annotation.',
       ),
-      'tags' => array(
-        'type' => 'text',
-        'not null' => TRUE,
-        'serialize' => TRUE,
-        'description' => 'The tags the annotation is tagged with.',
-      ),
       'ranges' => array(
         'type' => 'text',
         'not null' => TRUE,
         'serialize' => TRUE,
         'description' => 'The ranges of the annotation.',
+      ),
+      'permissions' => array(
+        'type' => 'varchar',
+        'length' => 10000,
+        'not null' => TRUE,
+        'default' => '',
+        'serialize' => TRUE,
+        'description' => 'The permissions for the annotation.',
+      ),
+      'tags' => array(
+        'type' => 'varchar',
+        'length' => 10000,
+        'not null' => TRUE,
+        'default' => '',
+        'serialize' => TRUE,
+        'description' => 'The tags the annotation is tagged with.',
       ),
     ),
     'indexes' => array(
