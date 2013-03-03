@@ -26,10 +26,6 @@
           }
         ]
       });
-
-      if (typeof Drupal.settings.annotator.debug !== "undefined") {
-        console.log('Annotator Filter plugin has been initialized.');
-      }
     }
   };
 })(jQuery);
