@@ -27,6 +27,7 @@ project.
 
 The current translation is found on [Transifex](https://www.transifex.com/projects/p/annotator/ "Transifex").
 To generate JSON from the PO files you can use [Javascript Gettext](http://jsgettext.berlios.de/ "Javascript Gettext")
+You need Perl and dependencies
 
 `sudo apt-get install perl liblocale-po-perl`
 
