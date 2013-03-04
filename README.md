@@ -38,4 +38,4 @@ to be able to use
 
 ## License
 Copyright (c) 2013 Stefan Auditor
-Licensed under the GNU, Library, General, Public, License licenses.
+Licensed under the GNU General Public License, GPL v2.
