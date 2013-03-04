@@ -20,21 +20,24 @@
         },
         userAuthorize: function (action, annotation, user) {
           if (user && annotation) {
+
             // Edit own annotations
-            if ((action == 'update' | action == 'delete') &&
-                user.uid == annotation.user.uid) {
-              console.log(action + ' access by uid granted.');
+            if (annotation.permissions[action]['user'] &&
+               (user.uid == annotation.user.uid) &&
+               (jQuery.inArray(user.uid, annotation.permissions[action]['user']) !== -1)) {
               return true;
             }
 
             // Check if user has appropriate role
             for (var i = 0; i < user.roles.length; i++) {
-              if (jQuery.inArray(user.roles[i], annotation.permissions[action]['roles'])) {
-                console.log(action + ' access by role granted.');
+              var role = jQuery.inArray(user.roles[i], annotation.permissions[action]['roles']);
+              if (jQuery.inArray(user.roles[i], annotation.permissions[action]['roles']) !== -1) {
                 return true;
               }
             }
           }
+
+          // Deny access
           return false;
         }
       });
