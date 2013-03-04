@@ -28,6 +28,8 @@ project.
 The current translation is found on [Transifex](https://www.transifex.com/projects/p/annotator/ "Transifex").
 To generate JSON from the PO files you can use [Javascript Gettext](http://jsgettext.berlios.de/ "Javascript Gettext")
 
+You need Perl and dependencies
+
 `sudo apt-get install perl liblocale-po-perl`
 
 to be able to use
@@ -36,4 +38,4 @@ to be able to use
 
 ## License
 Copyright (c) 2013 Stefan Auditor
-Licensed under the GNU, Library, General, Public, License licenses.
+Licensed under the GNU General Public License, GPL v2.
