@@ -45,32 +45,32 @@ class PermissionsAnnotatorPlugin extends AnnotatorPlugin {
     $settings['user'] = array(
       'uid' => $user->uid,
       'name' => format_username($user),
-      'roles' => array_values($user->roles),
+      'roles' => array_keys($user->roles),
     );
 
     $roles = user_roles(FALSE, 'administer annotations');
     $settings['permissions']['admin'] = array(
       'user' => array(),
-      'roles' => array_values($roles),
+      'roles' => array_keys($roles),
     );
     $roles = user_roles(FALSE, 'edit any annotations');
     $settings['permissions']['delete'] = array(
       'user' => array(
         $own ? $user->uid : NULL,
       ),
-      'roles' => array_values($roles),
+      'roles' => array_keys($roles),
     );
     $roles = user_roles(FALSE, 'view annotations');
     $settings['permissions']['read'] = array(
       'user' => array(),
-      'roles' => array_values($roles),
+      'roles' => array_keys($roles),
     );
     $roles = user_roles(FALSE, 'edit any annotations');
     $settings['permissions']['update'] = array(
       'user' => array(
         $own ? $user->uid : NULL,
       ),
-      'roles' => array_values($roles),
+      'roles' => array_keys($roles),
     );
     return $settings;
   }
@@ -78,6 +78,29 @@ class PermissionsAnnotatorPlugin extends AnnotatorPlugin {
   public function alter(&$annotation, $op) {
     parent::alter($annotation, $op);
     $settings = $this->permissions($annotation);
-    $annotation->permissions = $settings['permissions'];
+
+    switch($op) {
+      case 'load':
+        foreach($annotation->permissions as $action => $permission) {
+          // Reinitialize permissions with our current schema
+          if (count($permission)) {
+            $annotation->permissions[$action] = $settings['permissions'][$action];
+          }
+          // Leave empty to allow access to all
+          else {}
+        }
+        break;
+      case 'save':
+        // Reinitialize permissions
+        foreach($annotation->permissions as $action => $permission) {
+          // Initialize permissions with our own schema
+          if (count($permission)) {
+            $annotation->permissions[$action] = $settings['permissions'][$action];
+          }
+          // Leave empty to allow access to all
+          else {}
+        }
+        break;
+    }
   }
 }
