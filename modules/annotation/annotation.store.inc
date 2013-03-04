@@ -226,7 +226,7 @@ function annotation_api_entity_prepare($entity, $op) {
       $account = user_load($entity->uid);
       $entity->user = array(
         'uid' => $account->uid,
-        'name' => $account->name,
+        'name' => format_username($account),
         'roles' => array_values($account->roles),
       );
       unset($entity->uid);
