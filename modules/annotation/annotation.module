@@ -4,7 +4,6 @@
  * Annotator Store API
  * @see https://github.com/okfn/annotator/wiki/Storage
  *
- * TODO: API permissions
  * TODO: Node access check
  */
 
@@ -120,28 +119,34 @@ function annotation_menu() {
     'access arguments' => array('view', 'annotation', 1),
     'file' => 'annotation.pages.inc',
   );
+
+  // Index; API endpoint
   $items['annotation/api'] = array(
     'page callback' => 'annotation_api',
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
     'file' => 'annotation.store.inc',
   );
+  // Create; API endpoint to create annotations
   $items['annotation/api/annotations'] = array(
-    'page callback' => 'annotation_endpoint',
-    'access callback' => TRUE,
+    'page callback' => 'annotation_api_endpoint',
+    'access callback' => 'annotation_api_access',
+    'access arguments' => array(NULL),
     'type' => MENU_CALLBACK,
     'file' => 'annotation.store.inc',
   );
   $items['annotation/api/annotations/%'] = array(
-    'page callback' => 'annotation_endpoint',
+    'page callback' => 'annotation_api_endpoint',
     'page arguments' => array(3),
-    'access callback' => TRUE,
+    'access callback' => 'annotation_api_access',
+    'access arguments' => array(3),
     'type' => MENU_CALLBACK,
     'file' => 'annotation.store.inc',
   );
   $items['annotation/api/search'] = array(
     'page callback' => 'annotation_api_search',
-    'access callback' => TRUE,
+    'access callback' => 'annotation_api_access',
+    'access arguments' => array(NULL),
     'type' => MENU_CALLBACK,
     'file' => 'annotation.store.inc',
   );

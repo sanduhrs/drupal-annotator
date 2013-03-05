@@ -4,13 +4,18 @@
  * Implements hook_init().       
  */
 function annotator_init() {
-  if (module_exists('locale')) {
-    drupal_add_library('annotator', 'jsgettext', TRUE);
-  }
-  drupal_add_library('annotator', 'annotator', TRUE);
-  drupal_add_js(drupal_get_path('module', 'annotator') . '/js/annotator.js');
+  if (user_access('administer annotations') ||
+      user_access('view annotations') ||
+      user_access('create annotations')) {
 
-  annotator_execute_plugins();
+    if (module_exists('locale')) {
+      drupal_add_library('annotator', 'jsgettext', TRUE);
+    }
+    drupal_add_library('annotator', 'annotator', TRUE);
+    drupal_add_js(drupal_get_path('module', 'annotator') . '/js/annotator.js');
+
+    annotator_execute_plugins();
+  }
 }
 
 /**
