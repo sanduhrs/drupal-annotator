@@ -1,0 +1,204 @@
+<?php
+function annotator_menu() {
+  $items = array();
+  $items['admin/config/annotator'] = array(
+    'title' => 'Annotator',
+    'page callback' => 'drupal_get_form',
+    'access arguments' => array('access content'),
+    'page arguments' => array('annotator_admin_form'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'includes/admin.inc',
+  );
+  //https://github.com/okfn/annotator/wiki/Storage
+  $items['annotator/api'] = array(
+    'title' => 'Annotator storage API',
+    'page callback' => 'annotator_store_api',
+    'page arguments' => array('root'),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+  $items['annotator/api/annotations'] = array(
+    'title' => 'Annotator storage API',
+    'page callback' => 'annotator_store_api',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+  $items['annotator/api/search'] = array(
+    'title' => 'Annotator storage API',
+    'page callback' => 'annotator_store_api',
+    'page arguments' => array('search'),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+  $items['annotator/api/annotations/%'] = array(
+    'title' => 'Annotator storage API',
+    'page callback' => 'annotator_store_api',
+    'page arguments' => array(3),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+//https://github.com/okfn/annotator/wiki/Storage
+function annotator_store_api($arg = null) {
+  $method = $_SERVER['REQUEST_METHOD'];
+  if (isset($arg)) {
+    if ($arg == 'root') {
+      $action = 'root';
+    }
+    elseif ($arg == 'search') {
+      $action = 'search';
+    }
+    elseif (is_numeric($arg)) {
+      switch ($method) {
+        /*
+        case 'POST':
+          $action = 'create';
+          break;*/
+        case 'GET':
+          $action = 'read';
+          break;
+        case 'PUT':
+          $action = 'update';
+          break;
+        case 'DELETE':
+          $action = 'delete';
+          break;
+      }
+    }
+  }
+  elseif ($method == 'POST'){
+    $action = 'create';
+  }
+  else {
+    $action = 'index';
+  }
+  
+  switch ($action) {
+    case 'root':
+      $var = array(
+        'name' => 'Annotator Store API',
+        'version' => 'v1.0',
+      );
+      $json = drupal_json_output($var);
+      return $json;
+    case 'index':
+      return 'Index is not supported yet!';
+    case 'create':
+      return annotator_save();
+    case 'read':
+      $annotatin = annotator_load($arg);
+      $json = drupal_json_output($annotatin);
+      return $json;
+    case 'update':
+      return annotator_save($arg);
+    case 'delete':
+      if (annotator_delete($arg) == 1) {
+        http_response_code(204);
+        return TRUE;
+      }
+      return FALSE;
+    case 'search':
+      $query = drupal_get_query_parameters();
+      $result = array();
+      if (isset($query['uri'])) {
+        $uri = $query['uri'];
+        $limit = $query['limit'];
+        $result = annotator_search($uri, $limit);
+      }
+      $json = drupal_json_output ($result);
+      return $json;
+  }
+}
+
+function annotator_search($uri, $limit = 0) {
+  if ($limit) {
+    $results = db_select('annotator', 'a')->fields('a')->condition('uri', $uri, '=')->range(0, $limit)->execute();
+  }
+  else {
+    $results = db_select('annotator', 'a')->fields('a')->condition('uri', $uri, '=')->execute();
+  }
+  $rows = array();
+  foreach ($results->fetchAll() as $row) {
+    $row->ranges = unserialize($row->ranges);
+    $rows[] = $row;
+  }
+  $annotations = array(
+    'total' => $results->rowCount(),
+    'rows' => $rows,
+  );
+  return $annotations;
+
+}
+
+function annotator_load($id) {
+  $result = db_select('annotator', 'a')->fields('a')->condition('id', (int)$id, '=')->execute()->fetchAssoc();
+  $result['ranges'] = unserialize($result['ranges']);
+  return $result;
+}
+
+function annotator_delete($id) {
+  return db_delete('annotator')->condition('id', $id)->execute();
+}
+
+function annotator_save($id = null) {
+  global $user;
+  if (isset($user->uid)) {
+    $uid = $user->uid;
+  }
+  else {
+    $uid = 0;
+  }
+  $annotation = drupal_json_decode(file_get_contents('php://input'));
+  if ($id) {
+    try {
+      $fields = array(
+        'text' => $annotation['text'],
+        'updated' => REQUEST_TIME,
+      );
+      db_update('annotator')->fields($fields)->condition('id', (int)$id)->execute();
+    }
+    catch(Exception $e) {
+      throw($e);
+      return FALSE;
+    }
+  }
+  else {
+    try {
+      $ranges = serialize($annotation['ranges']);
+      $fields = array(
+        'text' => $annotation['text'],
+        'quote' => $annotation['quote'],
+        'uri' => $annotation['uri'],
+        'ranges' => $ranges,
+        'uid' => $uid,
+        'created' => REQUEST_TIME,
+        'updated' => REQUEST_TIME,
+      );
+      $id = db_insert('annotator')->fields($fields)->execute();
+    }
+    catch(Exception $e) {
+      //$db_prefix = $current_db_prefix;
+      throw($e);
+      return FALSE;
+    }
+  }
+  drupal_goto('annotator/api/annotations/' . $id, array(), 303);
+  return TRUE;
+}
+
+/**
+ * Implements hook_init().
+ */
+function annotator_init() {
+  if (drupal_match_path(current_path(), variable_get('annotator_js_pages', 'node/*'))) {
+  //  drupal_add_js(libraries_get_path('annotator') . '/pkg/annotator/annotator-full.js');
+    drupal_add_js(array('annotator' => array('target' => variable_get('annotator_js_selector', 'body'))), 'setting');
+    drupal_add_js(libraries_get_path('annotator') . '/annotator-full.min.js');
+    drupal_add_css(libraries_get_path('annotator') . '/annotator.min.css');
+    drupal_add_js(drupal_get_path('module', 'annotator') . '/js/annotator.js');
+  }
+}
+

@@ -1,0 +1,94 @@
+<?php
+/**
+ * Implements hook_schema().
+ */
+function annotator_schema() {
+  //https://github.com/okfn/annotator/wiki/Annotation-format
+  $schema['annotator'] = array(
+    'description' => 'Stores annotations.',
+    'fields' => array(
+      'id' => array(
+        'description' => t('unique id (added by backend)'),
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'annotator_schema_version' => array(
+        'description' => t('schema version: default v1.0'),
+        'type' => 'varchar',
+        'length' => 12,
+        'default' => 'v1.0',
+        'not null' => TRUE,
+      ),
+      'created' => array(
+        'description' => t('The Unix timestamp when the annoation was created'),
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'updated' => array(
+        'description' => t('The Unix timestamp when the annoation was updated'),
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'text' => array(
+        'description' => 'content of annotation',
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => FALSE,
+      ),
+      'quote' => array(
+        'description' => 'the annotated text (added by frontend)',
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => FALSE,
+      ),
+      'uri' => array(
+        'description' => 'URI of annotated document (added by frontend)',
+        'type' => 'varchar',
+        'length' => 2048, // Maximum URLs length.
+        'not null' => FALSE,
+        'sortable' => TRUE
+      ),
+      'ranges' => array(
+        'description' => 'list of ranges covered by annotation',
+        'type' => 'blob',
+        'not null' => TRUE,
+        'size' => 'big',
+      ),
+      'uid' => array(
+        'description' => t('user id of annotation owner'),
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+    ),
+    'indexes' => array(
+      'created' => array('created'),
+      'created' => array('created'),
+      'uid' => array('uid'),
+    ),
+    'primary key' => array('id'),
+  );
+  return $schema;
+}
+
+/**
+ * Implements hook_enable().
+ */
+function annotator_file_enable() {
+}
+
+/**
+ * Implements hook_install().
+ */
+function annotator_install() {
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function annotator_uninstall() {
+}
+

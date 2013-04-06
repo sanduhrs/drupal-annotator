@@ -1,1 +1,8 @@
 name = Annotator
+description = Integrates with open-source annotation tool Annotator. 
+
+core = 7.x
+dependencies[] = libraries
+dependencies[] = jquery_update
+
+configure = admin/config/annotator
