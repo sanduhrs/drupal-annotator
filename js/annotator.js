@@ -1,7 +1,14 @@
 (function ($) {
   Drupal.behaviors.annotator = {
     attach: function (context, settings) {
-      Drupal.Annotator = $(Drupal.settings.annotator.target).annotator();
+      Drupal.Annotator = $(Drupal.settings.annotator.target).annotator({
+        readOnly: Drupal.settings.annotator.readOnly 
+      });
+
+      Drupal.Annotator.annotator('addPlugin', 'Unsupported', {
+        message: "We're sorry the Annotator is not supported by this browser"
+      });
+
       Drupal.Annotator.annotator('addPlugin', 'Store', {
         // The endpoint of the store on your server.
         prefix: '/annotator/api',
@@ -16,6 +23,23 @@
           'limit': 0,
           'uri': document.URL
         }
+      });
+      /*
+      Drupal.Annotator.annotator('addPlugin', 'Filter', {
+      });*/
+
+      Drupal.Annotator.annotator('addPlugin', 'Permissions', {
+        user: Drupal.settings.annotator.user,
+        showViewPermissionsCheckbox: false,
+        showEditPermissionsCheckbox: false,
+        /*
+        permissions: {
+          'read':   [Drupal.Annotator.annotator.user],
+          'update': [Drupal.Annotator.annotator.user],
+          'delete': [Drupal.Annotator.annotator.user],
+          'admin':  [Drupal.Annotator.annotator.user]
+        }
+        */
       });
     }
   };
