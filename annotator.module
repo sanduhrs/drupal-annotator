@@ -226,7 +226,7 @@ function annotator_save($id = null) {
  * Implements hook_init().
  */
 function annotator_init() {
-  if (user_access('use annotator') || user_access('access all annotator') && drupal_match_path(current_path(), variable_get('annotator_js_pages', 'node/*'))) {
+  if ((user_access('use annotator') || user_access('access all annotator')) && drupal_match_path(current_path(), variable_get('annotator_js_pages', 'node/*'))) {
   //  drupal_add_js(libraries_get_path('annotator') . '/pkg/annotator/annotator-full.js');
     if (user_access('use annotator')) {
       global $user;
