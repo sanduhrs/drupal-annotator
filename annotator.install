@@ -69,6 +69,9 @@ function annotator_schema() {
       'created' => array('created'),
       'uid' => array('uid'),
     ),
+    'foreign keys' => array(
+      'uid' => array('users' => 'uid'),
+    ),
     'primary key' => array('id'),
   );
   return $schema;

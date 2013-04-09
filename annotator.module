@@ -25,6 +25,14 @@ function annotator_menu() {
     'type' => MENU_NORMAL_ITEM,
     'file' => 'includes/admin.inc',
   );
+  $items['annotator/annotation/%'] = array(
+    'title' => 'Annotation',
+    'page callback' => 'annotator_page',
+    'page arguments' => array(2),
+    'access arguments' => array('use annotator'),
+    'type' => MENU_CALLBACK,
+  );
+
   //https://github.com/okfn/annotator/wiki/Storage
   $items['annotator/api'] = array(
     'title' => 'Annotator storage API',
@@ -134,6 +142,7 @@ function annotator_search($uri, $limit = 0) {
   $query->join('users', 'u', 'a.uid = u.uid');
   $query->fields('a');//->fields('u', array('name'));
   $query->addField('u', 'name', 'user');
+  $query->addExpression('FROM_UNIXTIME(a.created, \'%Y-%m-%dT%TZ\')', 'created');
   $db_and = db_and();
 
   if (user_access('access all annotator')) {
@@ -156,6 +165,11 @@ function annotator_search($uri, $limit = 0) {
   $rows = array();
   foreach ($results->fetchAll() as $row) {
     $row->ranges = unserialize($row->ranges);
+    $row->links[] = array(
+      'href' => url('annotator/annotation/' . $row->id), 
+      'rel' => 'alternate',
+      'type' => 'text/html',
+    );
     $rows[] = $row;
   }
   $annotations = array(
@@ -167,8 +181,17 @@ function annotator_search($uri, $limit = 0) {
 }
 
 function annotator_load($id) {
-  $result = db_select('annotator', 'a')->fields('a')->condition('id', (int)$id, '=')->execute()->fetchAssoc();
+  $query = db_select('annotator', 'a')->fields('a')->condition('id', (int)$id, '=');
+  $query->join('users', 'u', 'a.uid = u.uid');
+  $query->addField('u', 'name', 'user');
+  $query->addExpression('FROM_UNIXTIME(a.created, \'%Y-%m-%dT%TZ\')', 'created');
+  $result = $query->execute()->fetchAssoc();
   $result['ranges'] = unserialize($result['ranges']);
+  $result['links'][] = array(
+    'href' => url('annotator/annotation/' . $result['id']), 
+    'rel' => 'alternate',
+    'type' => 'text/html',
+  );
   return $result;
 }
 
@@ -239,9 +262,44 @@ function annotator_init() {
 
     drupal_add_js(libraries_get_path('annotator') . '/annotator-full.min.js');
     drupal_add_css(libraries_get_path('annotator') . '/annotator.min.css');
-
+    /*
+    drupal_add_js(libraries_get_path('annotator.touch') . '/annotator.touch.min.js');
+    drupal_add_css(libraries_get_path('annotator.touch') . '/annotator.touch.min.css');
+    */
     drupal_add_js(drupal_get_path('module', 'annotator') . '/js/annotator.js');
     drupal_add_js(array('annotator' => array('target' => variable_get('annotator_js_selector', 'body'))), 'setting');
   }
 }
+
+function annotator_theme($existing, $type, $theme, $path) {
+  $path = drupal_get_path('module', 'annotator');
+  return array(
+    'annotation' => array(
+      'render element' => 'elements',
+      'template' => 'annotation',
+      'path' => $path . '/theme',
+      'variables' => array(
+        'id' => NULL, 
+        'created' => Null,
+        'updated' => Null,
+        'text' => Null,
+        'quote' => Null,
+        'uri' => Null,
+        'user' => Null,
+        'uid' => Null,
+      ),
+    ),
+  );
+}
+
+function template_preprocess_annotation(&$vars) {
+  $vars['user'] = theme('username', array('account' => user_load($vars['uid'])));
+}
+
+function annotator_page($id) {
+  $annotation = annotator_load($id);
+  $content = theme('annotation', $annotation);
+  return $content;
+}
+
 

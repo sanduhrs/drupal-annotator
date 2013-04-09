@@ -41,6 +41,10 @@
         }
         */
       });
+      /*
+      Drupal.Annotator.annotator('addPlugin', 'Touch', {
+      });
+      */
     }
   };
 })(jQuery);
