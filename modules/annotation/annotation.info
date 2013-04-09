@@ -3,6 +3,8 @@ description = Annotator annotation store
 package = Annotator
 core = 7.x
 
+configure = admin/config/media/annotator
+
 files[] = annotation.class.inc
 files[] = annotation.controller.inc
 files[] = plugins/annotator/StoreAnnotatorPlugin.class.inc
