@@ -74,9 +74,9 @@ class AnnotationAPIController extends EntityAPIController {
     //     '!uri' => l($wrapper->uri->value(array('sanitize' => TRUE)), $wrapper->uri->value(array('sanitize' => TRUE))),
     //   ))
     // );
-$user = $wrapper->user->name->value();
-dsm(get_properties($wrapper));
-dsm($user);
+    // $user = $wrapper->user->name->value();
+    // dsm(get_properties($wrapper));
+    // dsm($user);
     $content['#view_mode'] = $view_mode;
     return parent::buildContent($entity, $view_mode, $langcode, $content);
   }
