@@ -30,9 +30,9 @@ function annotation_entity_info() {
       'label callback' => 'annotation_label',
       'uri callback' => 'annotation_uri',
       'bundles' => array(),
-      'bundle keys' => array(
-        'bundle' => 'name',
-      ),
+      // 'bundle keys' => array(
+      //   'bundle' => 'name',
+      // ),
       'view modes' => array(
         'full' => array(
           'label' => t('Default'),
