@@ -4,6 +4,8 @@ package = Annotator
 core = 7.x
 hidden = TRUE
 
+configure = admin/config/media/annotator
+
 files[] = plugins/annotator/ReadmillAnnotatorPlugin.class.inc
 
 dependencies[] = annotator
