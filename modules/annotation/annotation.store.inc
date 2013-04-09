@@ -7,9 +7,6 @@
  * TODO: API permissions
  */
 
-define('ANNOTATOR_VERSION', '2.0.0');
-define('ANNOTATOR_SCHEMA_VERSION', 'v1.0');
-
 /**
  * API access callback.
  */
