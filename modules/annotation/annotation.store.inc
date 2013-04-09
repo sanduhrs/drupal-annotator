@@ -3,62 +3,31 @@
 /**
  * Annotator Store API
  * @see https://github.com/okfn/annotator/wiki/Storage
- *
- * TODO: API permissions
  */
-
-/**
- * API access callback.
- */
-function annotation_api_access($annotation = NULL) {
-  $method = $_SERVER['REQUEST_METHOD'];
-
-  if (!isset($annotation) && $method === 'GET') {
-    // read or search access
-    return annotation_access('view', NULL);
-  }
-  elseif (isset($annotation)) {
-    switch($method) {
-      // create access
-      case 'POST':
-        return annotation_access('create', NULL);
-        break;
-      // update access
-      case 'PUT':
-        return annotation_access('edit', $annotation);
-        break;
-      case 'DELETE':
-        return annotation_access('edit', $annotation);
-        break;
-    }
-  }
-  return FALSE;
-}
 
 /**
  * Annotation API main endpoint
  */
 function annotation_api_endpoint($id = NULL) {
-  $output = array();
   $method = $_SERVER['REQUEST_METHOD'];
 
   switch ($method) {
     case 'GET':
       if (isset($id) && is_numeric($id)) {
-        $output = annotation_api_read($id);
+        annotation_api_read($id);
       }
       else {
-        $output = annotation_api_index();
+        annotation_api_index();
       }
       break;
     case 'POST':
-      $output = annotation_api_create();
+      annotation_api_create();
       break;
     case 'PUT':
-      $output = annotation_api_update($id);
+      annotation_api_update($id);
       break;
     case 'DELETE':
-      $output = annotation_api_destroy($id);
+      annotation_api_destroy($id);
       break;
   }
 }

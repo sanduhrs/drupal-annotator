@@ -57,28 +57,6 @@ function annotation_entity_info() {
 }
 
 /**
- * Access callback.
- */
-function annotation_access($op, $entity, $account = NULL, $entity_type = NULL) {
-  global $user;
-  if (!isset($account)) {
-    $account = $user;
-  }
-  switch ($op) {
-    case 'create':
-      return user_access('administer annotations', $account)
-          || user_access('create annotations', $account);
-    case 'view':
-      return user_access('administer annotations', $account)
-          || user_access('view annotations', $account);
-    case 'edit':
-      return user_access('administer annotations')
-          || user_access('edit any annotations')
-          || (user_access('edit own annotations') && ($entity->uid == $account->uid));
-  }
-}
-
-/**
  * Implements hook_entity_property_info_alter().
  */
 function annotation_entity_property_info_alter(&$info) {
@@ -126,34 +104,87 @@ function annotation_menu() {
   // Index; API endpoint
   $items['annotation/api'] = array(
     'page callback' => 'annotation_api',
-    'access callback' => TRUE,
+    'access callback' => /*'annotation_method_access'*/TRUE,
     'type' => MENU_CALLBACK,
     'file' => 'annotation.store.inc',
   );
   // Create; API endpoint to create annotations
   $items['annotation/api/annotations'] = array(
     'page callback' => 'annotation_api_endpoint',
-    'access callback' => 'annotation_api_access',
-    'access arguments' => array(NULL),
+    'access callback' => /*'annotation_method_access'*/TRUE,
+    'access arguments' => array('', 'annotation', NULL),
     'type' => MENU_CALLBACK,
     'file' => 'annotation.store.inc',
   );
   $items['annotation/api/annotations/%'] = array(
     'page callback' => 'annotation_api_endpoint',
     'page arguments' => array(3),
-    'access callback' => 'annotation_api_access',
-    'access arguments' => array(3),
+    'access callback' => /*'annotation_method_access'*/TRUE,
+    'access arguments' => array('', 'annotation', 3),
     'type' => MENU_CALLBACK,
     'file' => 'annotation.store.inc',
   );
   $items['annotation/api/search'] = array(
     'page callback' => 'annotation_api_search',
-    'access callback' => 'annotation_api_access',
-    'access arguments' => array(NULL),
+    'access callback' => 'entity_access',
+    'access arguments' => array('view', 'annotation', NULL),
     'type' => MENU_CALLBACK,
     'file' => 'annotation.store.inc',
   );
   return $items;
+}
+
+/**
+ * Access callback.
+ */
+function annotation_access($op, $entity, $account = NULL, $entity_type = NULL) {
+  global $user;
+  if (!isset($account)) {
+    $account = $user;
+  }
+  switch ($op) {
+    case 'create':
+      return user_access('administer annotations', $account)
+          || user_access('create annotations', $account);
+    case 'view':
+      return user_access('administer annotations', $account)
+          || user_access('view annotations', $account);
+    case 'edit':
+      return user_access('administer annotations')
+          || user_access('edit any annotations')
+          || (user_access('edit own annotations') && ($entity->uid == $account->uid));
+  }
+}
+
+/**
+ * Method dependent access callback
+ * @see annotation_api_endpoint()
+ */
+function annotation_entity_method_access($op, $entity_type, $entity = NULL, $account = NULL) {
+  $method = $_SERVER['REQUEST_METHOD'];
+
+  switch ($method) {
+    case 'GET':
+      if (isset($entity) && is_numeric($id)) {
+        annotation_api_read($id);
+        // entity_access('view', $entity_type, $entity = NULL, $account = NULL);
+      }
+      else {
+        annotation_api_index();
+        // entity_access('view', $entity_type, $entity = NULL, $account = NULL);
+      }
+      break;
+    case 'POST':
+      annotation_api_create();
+      // entity_access('create', $entity_type, $entity = NULL, $account = NULL);
+      break;
+    case 'PUT':
+      annotation_api_update($id);
+      break;
+    case 'DELETE':
+      annotation_api_destroy($id);
+      break;
+  }
 }
 
 /**
