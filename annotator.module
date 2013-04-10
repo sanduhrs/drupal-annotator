@@ -32,8 +32,7 @@ function annotator_menu() {
     'access arguments' => array('use annotator'),
     'type' => MENU_CALLBACK,
   );
-
-  //https://github.com/okfn/annotator/wiki/Storage
+  //See https://github.com/okfn/annotator/wiki/Storage
   $items['annotator/api'] = array(
     'title' => 'Annotator storage API',
     'page callback' => 'use annotator',
@@ -65,7 +64,7 @@ function annotator_menu() {
   return $items;
 }
 
-//https://github.com/okfn/annotator/wiki/Storage
+//See https://github.com/okfn/annotator/wiki/Storage
 function annotator_store_api($arg = null) {
   $method = $_SERVER['REQUEST_METHOD'];
   if (isset($arg)) {
