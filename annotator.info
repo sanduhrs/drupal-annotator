@@ -1,8 +1,18 @@
 name = Annotator
-description = Integrates with open-source annotation tool Annotator. 
-
+description = Annotator
+package = Annotation
 core = 7.x
-dependencies[] = libraries
-dependencies[] = jquery_update
 
-configure = admin/config/annotator
+configure = admin/config/content/annotator
+
+files[] = includes/AnnotatorPlugin.class.inc
+files[] = plugins/annotator/AuthAnnotatorPlugin.class.inc
+files[] = plugins/annotator/FilterAnnotatorPlugin.class.inc
+files[] = plugins/annotator/I18nAnnotatorPlugin.class.inc
+files[] = plugins/annotator/MarkdownAnnotatorPlugin.class.inc
+files[] = plugins/annotator/PermissionsAnnotatorPlugin.class.inc
+files[] = plugins/annotator/TagsAnnotatorPlugin.class.inc
+files[] = plugins/annotator/UnsupportedAnnotatorPlugin.class.inc
+
+dependencies[] = ctools
+dependencies[] = jquery_update
