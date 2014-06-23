@@ -5,6 +5,12 @@
  */
 function annotator_admin() {
   $form = $plugin_options = array();
+  $form['annotator_element'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Annotator element'),
+    '#description' => 'Use jQuery to select the element that you would like to annotate. ' . l('Read more', 'http://docs.annotatorjs.org/en/latest/getting-started.html#setting-up-annotator'),
+    '#default_value' => variable_get('annotator_element','.node'),
+  );
   $form['plugins'] = array(
     '#type' => 'fieldset',
     '#title' => t('Plugins'),

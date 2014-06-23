@@ -1,19 +1,21 @@
 <?php
 
 /**
- * Implements hook_init().       
+ * Implements hook_init().
  */
 function annotator_init() {
-  if (user_access('administer annotations') ||
-      user_access('view annotations') ||
-      user_access('create annotations')) {
-
+  if (user_access('administer annotations') || user_access('view annotations') || user_access('create annotations')) {
+    /*TODO
     if (module_exists('locale')) {
       drupal_add_library('annotator', 'jsgettext', TRUE);
+    }*/
+    $library = libraries_load('annotator');
+    if ($library['loaded'] == FALSE) {
+      drupal_set_message($library['error message'], 'error');
+      return 'Please download and install ' . l( $library['name'], $library['download url'] ) . '!';
     }
-    drupal_add_library('annotator', 'annotator', TRUE);
+    drupal_add_js(array('annotator' => array('element' => variable_get('annotator_element','.node'))), 'setting');
     drupal_add_js(drupal_get_path('module', 'annotator') . '/js/annotator.js');
-
     annotator_execute_plugins();
   }
 }
@@ -22,7 +24,7 @@ function annotator_init() {
  * Implements hook_permission().
  */
 function annotator_permission() {
-  /*
+  /*TODO
   return array(
     'create annotations' => array(
       'title' => t('Create annotations'),
@@ -59,7 +61,7 @@ function annotator_menu() {
   $items = array();
   $items['admin/config/content/annotator'] = array(
     'title' => 'Annotator',
-    'description' => 'Annotator settings.',
+    'description' => 'Configure Annotator settings.',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('annotator_admin'),
     'access arguments' => array('administer annotations'),
@@ -70,37 +72,27 @@ function annotator_menu() {
 }
 
 /**
- * Implements hook_library().
+ * Implements hook_library_info().
  */
-function annotator_library() {
+function annotator_libraries_info() {
   $libraries['annotator'] = array(
-    'title' => 'Annotator',
-    'website' => 'http://okfnlabs.org/annotator/',
-    'version' => '1.2.6',
-    'js' => array(
-      './sites/all/libraries/annotator/annotator-full.min.js' => array(),
+    'name' => 'Annotator',
+    'vendor url' => 'http://annotatorjs.org',
+    'download url' => 'https://github.com/openannotation/annotator/releases/latest',
+    'version arguments' => array(
+      'file' => 'annotator-full.min.js',
+      'pattern' => '@Annotator\sv(.*)@',
+      'lines' => 10,
     ),
-    'css' => array(
-      './sites/all/libraries/annotator/annotator.min.css' => array(
-        'type' => 'file',
-        'media' => 'all',
+    'files' => array(
+      'js' => array(
+        'annotator-full.min.js',
+      ),
+      'css' => array(
+        'annotator.min.css',
       ),
     ),
-  );
-  $libraries['jsgettext'] = array(
-    'title' => 'Javascript Gettext',
-    'website' => 'http://jsgettext.berlios.de/',
-    'version' => '0.08',
-    'js' => array(
-      './sites/all/libraries/jsgettext/lib/Gettext.js' => array(),
-    ),
-  );
-  $libraries['showdown'] = array(
-    'title' => 'Showdown',
-    'website' => 'https://github.com/coreyti/showdown',
-    'version' => '0.3.1',
-    'js' => array(
-      './sites/all/libraries/showdown/showdown.js' => array(),
+    'variants' => array(
     ),
   );
   return $libraries;
