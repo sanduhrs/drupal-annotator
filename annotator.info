@@ -18,3 +18,4 @@ files[] = plugins/annotator/UnsupportedAnnotatorPlugin.class.inc
 
 dependencies[] = ctools
 dependencies[] = jquery_update
+dependencies[] = libraries
