@@ -12,7 +12,7 @@ function annotator_init() {
     $library = libraries_load('annotator');
     if ($library['loaded'] == FALSE) {
       drupal_set_message($library['error message'], 'error');
-      return 'Please download and install ' . l( $library['name'], $library['download url'] ) . '!';
+      //return 'Please download and install ' . l( $library['name'], $library['download url'] ) . '!';
     }
     drupal_add_js(array('annotator' => array('element' => variable_get('annotator_element','.node'))), 'setting');
     drupal_add_js(drupal_get_path('module', 'annotator') . '/js/annotator.js');
@@ -24,33 +24,7 @@ function annotator_init() {
  * Implements hook_permission().
  */
 function annotator_permission() {
-  return array(
-    'create annotations' => array(
-      'title' => t('Create annotations'),
-      'description' => t('Allows users to annotation tasks.'),
-      'restrict access' => TRUE,
-    ),
-    'view annotations' => array(
-      'title' => t('View annotations'),
-      'description' => t('Allows users to view annotations.'),
-      'restrict access' => TRUE,
-    ),
-    'edit any annotations' => array(
-      'title' => t('Edit any annotations'),
-      'description' => t('Allows users to edit any annotations.'),
-      'restrict access' => TRUE,
-    ),
-    'edit own annotations' => array(
-      'title' => t('Edit own annotation'),
-      'description' => t('Allows users to edit own annotations.'),
-      'restrict access' => TRUE,
-    ),
-    'administer annotations' => array(
-      'title' => t('Administer annotations'),
-      'description' => t('Allows users to administer annotations.'),
-      'restrict access' => TRUE,
-    ),
-  );
+  return array();
 }
 
 /**
