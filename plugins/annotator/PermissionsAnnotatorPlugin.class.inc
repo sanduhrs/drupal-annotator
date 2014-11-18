@@ -24,7 +24,7 @@ class PermissionsAnnotatorPlugin extends AnnotatorPlugin {
       'showViewPermissionsCheckbox' => FALSE,
       'showEditPermissionsCheckbox' => FALSE,
     );
-    return parent::settings($defaults);    
+    return parent::settings($defaults);
   }
 
   public function setup() {
@@ -78,35 +78,5 @@ class PermissionsAnnotatorPlugin extends AnnotatorPlugin {
       'roles' => array_keys($roles),
     );
     return $settings;
-  }
-
-  public function alter(&$annotation, $op) {
-    dd($annotation, $op);
-    parent::alter($annotation, $op);
-    $settings = $this->permissions($annotation);
-
-    // switch($op) {
-    //   case 'load':
-    //     foreach($annotation->permissions as $action => $permission) {
-    //       // Reinitialize permissions with our current schema
-    //       if (count($permission)) {
-    //         $annotation->permissions[$action] = $settings['permissions'][$action];
-    //       }
-    //       // Leave empty to allow access to all
-    //       else {}
-    //     }
-    //     break;
-    //   case 'save':
-    //     // Reinitialize permissions
-    //     foreach($annotation->permissions as $action => $permission) {
-    //       // Initialize permissions with our own schema
-    //       if (count($permission)) {
-    //         $annotation->permissions[$action] = $settings['permissions'][$action];
-    //       }
-    //       // Leave empty to allow access to all
-    //       else {}
-    //     }
-    //     break;
-    // }
   }
 }
