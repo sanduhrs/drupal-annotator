@@ -29,14 +29,14 @@
         userAuthorize: function (action, annotation, user) {
           if (user && annotation) {
 
-            // Edit own annotations
+            // Edit own annotations.
             if (annotation.permissions[action]['user'] &&
                (user.uid == annotation.user.uid) &&
                (jQuery.inArray(user.uid, annotation.permissions[action]['user']) !== -1)) {
               return true;
             }
 
-            // Check if user has appropriate role
+            // Check if user has appropriate role.
             for (var i = 0; i < user.roles.length; i++) {
               var role = jQuery.inArray(user.roles[i], annotation.permissions[action]['roles']);
               if (jQuery.inArray(user.roles[i], annotation.permissions[action]['roles']) !== -1) {
@@ -45,7 +45,7 @@
             }
           }
 
-          // Deny access
+          // Deny access.
           return false;
         }
       });

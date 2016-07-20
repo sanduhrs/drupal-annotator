@@ -1,4 +1,12 @@
+/**
+ * @file
+ * Attaches behaviors for Annotator's store plugin.
+ */
+
 (function ($) {
+
+  'use strict';
+
   Drupal.behaviors.annotatorStore = {
     attach: function (context, settings) {
       Drupal.Annotator.annotator('addPlugin', 'Store', {
@@ -16,4 +24,5 @@
       });
     }
   };
+
 })(jQuery);

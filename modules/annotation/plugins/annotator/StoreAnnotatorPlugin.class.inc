@@ -1,9 +1,18 @@
 <?php
 
 /**
- * Annotator ctools plugin
+ * @file
+ * Annotator Store Plugin.
+ */
+
+/**
+ * Annotator ctools plugin.
  */
 class StoreAnnotatorPlugin extends AnnotatorPlugin {
+
+  /**
+   * {@inheritdoc}
+   */
   public function settingsForm() {
     $defaults = $this->settings();
     $form['prefix'] = array(
@@ -47,6 +56,9 @@ class StoreAnnotatorPlugin extends AnnotatorPlugin {
     return $form;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function settings($defaults = array()) {
     $defaults = array(
       'prefix' => base_path() . 'annotation/api',
@@ -60,12 +72,16 @@ class StoreAnnotatorPlugin extends AnnotatorPlugin {
         'search' => '/search',
       ),
     );
-    return parent::settings($defaults);    
+    return parent::settings($defaults);
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function setup() {
     $settings = $this->settings();
     drupal_add_js(array('annotator_store' => (array) $settings), 'setting');
     drupal_add_js(drupal_get_path('module', 'annotation') . '/js/annotator_store.js');
   }
+
 }

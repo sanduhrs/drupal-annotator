@@ -1,12 +1,20 @@
+/**
+ * @file
+ * Attaches behaviors for Annotator's HelloWorld plugin.
+ */
+
 (function ($) {
-  Annotator.Plugin.HelloWorld = (function() {
+
+  'use strict';
+
+  Annotator.Plugin.HelloWorld = (function () {
 
     function HelloWorld(element, options) {
       this.element = element;
       this.options = options;
     }
 
-    HelloWorld.prototype.pluginInit = function() {
+    HelloWorld.prototype.pluginInit = function () {
       console.log("Initialized with annotator: ", this.annotator);
 
       this.annotator
@@ -54,4 +62,5 @@
       Drupal.Annotator.annotator('addPlugin', 'HelloWorld');
     }
   };
+
 })(jQuery);

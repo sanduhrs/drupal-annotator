@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Annotator Readmill Plugin.
+ */
+
 $plugin = array(
   'name' => 'readmill',
   'label' => t('Readmill'),

@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Annotator Offline Plugin.
+ */
+
 $plugin = array(
   'name' => 'offline',
   'label' => t('Offline'),
