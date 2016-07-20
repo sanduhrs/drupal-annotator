@@ -1,9 +1,18 @@
 <?php
 
 /**
- * Annotator ctools plugin
+ * @file
+ * Permissions Annotator Plugin.
+ */
+
+/**
+ * Annotator ctools plugin.
  */
 class PermissionsAnnotatorPlugin extends AnnotatorPlugin {
+
+  /**
+   * Settings form for PermissionsAnnotatorPlugin.
+   */
   public function settingsForm() {
     $defaults = $this->settings();
     $form['showViewPermissionsCheckbox'] = array(
@@ -19,6 +28,9 @@ class PermissionsAnnotatorPlugin extends AnnotatorPlugin {
     return $form;
   }
 
+  /**
+   * Setttings for PermissionsAnnotatorPlugin.
+   */
   public function settings($defaults = array()) {
     $defaults = array(
       'showViewPermissionsCheckbox' => FALSE,
@@ -27,21 +39,27 @@ class PermissionsAnnotatorPlugin extends AnnotatorPlugin {
     return parent::settings($defaults);
   }
 
+  /**
+   * Set up PermissionsAnnotatorPlugin.
+   */
   public function setup() {
     $settings = $this->permissions();
     drupal_add_js(array('annotator_permissions' => (array) $settings), 'setting');
     drupal_add_js(drupal_get_path('module', 'annotator') . '/js/annotator_permissions.js');
   }
 
+  /**
+   * Set permissions.
+   */
   public function permissions($annotation = NULL) {
     global $user;
 
     $own = FALSE;
-    // Set the right permission for new annotations
+    // Set the right permission for new annotations.
     if (!isset($annotation)) {
       $own = user_access('edit own annotations');
     }
-    // Set the right permission for existing annotations
+    // Set the right permission for existing annotations.
     elseif (isset($annotation->uid)) {
       $own = user_access('edit own annotations') && ($annotation->uid == $user->uid);
     }
@@ -79,4 +97,5 @@ class PermissionsAnnotatorPlugin extends AnnotatorPlugin {
     );
     return $settings;
   }
+
 }

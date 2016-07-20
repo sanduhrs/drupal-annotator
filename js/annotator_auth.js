@@ -1,4 +1,12 @@
+/**
+ * @file
+ * Attaches behaviors for Annotator's auth plugin.
+ */
+
 (function ($) {
+
+  'use strict';
+
   Drupal.behaviors.annotatorAuth = {
     attach: function (context, settings) {
       console.log(settings.annotator_auth.token.length);
@@ -9,4 +17,5 @@
       });
     }
   };
+
 })(jQuery);

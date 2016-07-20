@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Permissions Annotator Plugin.
+ */
+
 $plugin = array(
   'name' => 'permissions',
   'label' => t('Permissions'),

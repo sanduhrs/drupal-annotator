@@ -1,4 +1,12 @@
+/**
+ * @file
+ * Attaches behaviors for Annotator's permissions plugin.
+ */
+
 (function ($) {
+
+  'use strict';
+
   Drupal.behaviors.annotatorPermissions = {
     attach: function (context, settings) {
       Drupal.Annotator.annotator('addPlugin', 'Permissions', {
@@ -43,4 +51,5 @@
       });
     }
   };
+
 })(jQuery);

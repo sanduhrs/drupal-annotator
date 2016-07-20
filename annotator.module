@@ -1,30 +1,22 @@
 <?php
+/**
+ * @file
+ * Annotator module.
+ */
 
 /**
  * Implements hook_init().
  */
 function annotator_init() {
   if (user_access('administer annotations') || user_access('view annotations') || user_access('create annotations')) {
-    /*TODO
-    if (module_exists('locale')) {
-      drupal_add_library('annotator', 'jsgettext', TRUE);
-    }*/
     $library = libraries_load('annotator');
     if ($library['loaded'] == FALSE) {
       drupal_set_message($library['error message'], 'error');
-      //return 'Please download and install ' . l( $library['name'], $library['download url'] ) . '!';
     }
-    drupal_add_js(array('annotator' => array('element' => variable_get('annotator_element','.node'))), 'setting');
+    drupal_add_js(array('annotator' => array('element' => variable_get('annotator_element', '.node'))), 'setting');
     drupal_add_js(drupal_get_path('module', 'annotator') . '/js/annotator.js');
     annotator_execute_plugins();
   }
-}
-
-/**
- * Implements hook_permission().
- */
-function annotator_permission() {
-  return array();
 }
 
 /**
@@ -65,8 +57,7 @@ function annotator_libraries_info() {
         'annotator.min.css',
       ),
     ),
-    'variants' => array(
-    ),
+    'variants' => array(),
   );
   return $libraries;
 }
@@ -92,7 +83,7 @@ function annotator_ctools_plugin_type() {
 }
 
 /**
- * Execute ctools plugins
+ * Execute ctools plugins.
  */
 function annotator_execute_plugins($annotation = NULL, $op = NULL) {
   ctools_include('plugins');
