@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * Annotator module.
+ */
 
 /**
  * Implements hook_uninstall().

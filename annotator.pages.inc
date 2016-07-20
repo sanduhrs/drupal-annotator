@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * @file
+ * Annotator pages.
+ */
+
+/**
  * Admin page; Menu callback.
  */
 function annotator_admin() {
@@ -8,8 +13,8 @@ function annotator_admin() {
   $form['annotator_element'] = array(
     '#type' => 'textfield',
     '#title' => t('Annotator element'),
-    '#description' => 'Use jQuery to select the element that you would like to annotate. ' . l('Read more', 'http://docs.annotatorjs.org/en/latest/getting-started.html#setting-up-annotator'),
-    '#default_value' => variable_get('annotator_element','.node'),
+    '#description' => 'Use jQuery to select the element that you would like to annotate. ' . l(t('Read more'), 'http://docs.annotatorjs.org/en/latest/getting-started.html#setting-up-annotator'),
+    '#default_value' => variable_get('annotator_element', '.node'),
   );
   $form['plugins'] = array(
     '#type' => 'fieldset',

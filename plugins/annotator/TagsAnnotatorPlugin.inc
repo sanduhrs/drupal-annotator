@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Tags Annotator Plugin.
+ */
+
 $plugin = array(
   'name' => 'tags',
   'label' => t('Tags'),

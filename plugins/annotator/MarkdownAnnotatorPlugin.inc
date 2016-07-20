@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Markdown Annotator Plugin.
+ */
+
 $plugin = array(
   'name' => 'markdown',
   'label' => t('Markdown'),

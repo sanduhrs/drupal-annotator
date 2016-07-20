@@ -1,9 +1,18 @@
 <?php
 
 /**
- * Annotator ctools plugin
+ * @file
+ * Unsupported Annotator Plugin.
+ */
+
+/**
+ * Annotator ctools plugin.
  */
 class UnsupportedAnnotatorPlugin extends AnnotatorPlugin {
+
+  /**
+   * Settings form.
+   */
   public function settingsForm() {
     $defaults = $this->settings();
     $form['message'] = array(
@@ -15,6 +24,9 @@ class UnsupportedAnnotatorPlugin extends AnnotatorPlugin {
     return $form;
   }
 
+  /**
+   * Get settings or return error.
+   */
   public function settings($defaults = array()) {
     $defaults = array(
       'message' => t("We're sorry the Annotator is not supported by this browser"),
@@ -22,7 +34,11 @@ class UnsupportedAnnotatorPlugin extends AnnotatorPlugin {
     return parent::settings($defaults);
   }
 
+  /**
+   * Set up module.
+   */
   public function setup() {
     drupal_add_js(drupal_get_path('module', 'annotator') . '/js/annotator_unsupported.js');
   }
+
 }

@@ -1,58 +1,22 @@
 <?php
+/**
+ * @file
+ * Annotator module.
+ */
 
 /**
  * Implements hook_init().
  */
 function annotator_init() {
   if (user_access('administer annotations') || user_access('view annotations') || user_access('create annotations')) {
-    /*TODO
-    if (module_exists('locale')) {
-      drupal_add_library('annotator', 'jsgettext', TRUE);
-    }*/
     $library = libraries_load('annotator');
     if ($library['loaded'] == FALSE) {
       drupal_set_message($library['error message'], 'error');
-      //return 'Please download and install ' . l( $library['name'], $library['download url'] ) . '!';
     }
-    drupal_add_js(array('annotator' => array('element' => variable_get('annotator_element','.node'))), 'setting');
+    drupal_add_js(array('annotator' => array('element' => variable_get('annotator_element', '.node'))), 'setting');
     drupal_add_js(drupal_get_path('module', 'annotator') . '/js/annotator.js');
     annotator_execute_plugins();
   }
-}
-
-/**
- * Implements hook_permission().
- */
-function annotator_permission() {
-  /*TODO
-  return array(
-    'create annotations' => array(
-      'title' => t('Create annotations'),
-      'description' => t('Allows users to annotation tasks.'),
-      'restrict access' => TRUE,
-    ),
-    'view annotations' => array(
-      'title' => t('View annotations'),
-      'description' => t('Allows users to view annotations.'),
-      'restrict access' => TRUE,
-    ),
-    'edit any annotations' => array(
-      'title' => t('Edit any annotations'),
-      'description' => t('Allows users to edit any annotations.'),
-      'restrict access' => TRUE,
-    ),
-    'edit own annotations' => array(
-      'title' => t('Edit own annotation'),
-      'description' => t('Allows users to edit own annotations.'),
-      'restrict access' => TRUE,
-    ),
-    'administer annotations' => array(
-      'title' => t('Administer annotations'),
-      'description' => t('Allows users to administer annotations.'),
-      'restrict access' => TRUE,
-    ),
-  );*/
-  return array();
 }
 
 /**
@@ -93,8 +57,7 @@ function annotator_libraries_info() {
         'annotator.min.css',
       ),
     ),
-    'variants' => array(
-    ),
+    'variants' => array(),
   );
   return $libraries;
 }
@@ -120,7 +83,7 @@ function annotator_ctools_plugin_type() {
 }
 
 /**
- * Execute ctools plugins
+ * Execute ctools plugins.
  */
 function annotator_execute_plugins($annotation = NULL, $op = NULL) {
   ctools_include('plugins');
